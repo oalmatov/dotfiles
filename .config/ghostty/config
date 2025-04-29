@@ -1,0 +1,9 @@
+shell-integration = zsh
+
+font-family = "Menlo Bold"
+font-size = 20
+font-style-bold = true
+font-thicken = true
+font-thicken-strength = 255
+
+theme = "GruvboxDark"
