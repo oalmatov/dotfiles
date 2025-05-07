@@ -12,6 +12,6 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
 
 -- Set syntax, autoindent, and tab settings for C files
 vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-    pattern = {"*.ts", "*.tsx", "*.js", "*.jsx", "*.json", "*.css"},
+    pattern = {"*.ts", "*.tsx", "*.js", "*.jsx", "*.json", "*.css", "*.html"},
     command = "set tabstop=2 softtabstop=2 shiftwidth=2",
 })
