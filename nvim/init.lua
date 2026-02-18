@@ -1,26 +1,26 @@
-require("config.lazy")
+-- set core options
+require("config.options")
 
-vim.o.compatible = false
-vim.cmd("filetype off")
+-- install `lazy.nvim`
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out,                            "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.opt.autoindent = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.cursorline = true
-vim.opt.incsearch = true
-vim.opt.hlsearch = true
+-- load plugins
+require("lazy").setup("plugins")
 
--- Set syntax and textwidth for specific file types
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-  pattern = {"*.svi", "*.svi.mako", "*.v.mako", "*.sv.mako"},
-  command = "set syntax=systemverilog textwidth=0",
-})
-
--- Set syntax, autoindent, and tab settings for C files
-vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
-  pattern = {"*.c", "*.py"},
-  command = "set syntax=c autoindent tabstop=4 shiftwidth=4 expandtab textwidth=79 colorcolumn=80",
-})
+-- load remaining options (some dependent on plugins)
+require("config.keymaps")
+require("config.autocmds")
